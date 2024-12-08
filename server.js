@@ -8,7 +8,7 @@ const axios = require('axios');  // Add axios for handling requests to Flask API
 
 const app = express();
 const PORT = 3000;
-const FLASK_API_URL = https://backend-1-r00q.onrender.com;  // Flask API URL
+const FLASK_API_URL = 'https://backend-1-r00q.onrender.com';  // Flask API URL
 
 // MongoDB Connection
 mongoose.connect('mongodb://localhost:27017/otpLoginApp', {
