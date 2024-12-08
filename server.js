@@ -1,3 +1,4 @@
+require('dotenv').config();  // Load environment variables from .env file
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -10,13 +11,14 @@ const app = express();
 const PORT = 3000;
 const FLASK_API_URL = 'https://backend-1-r00q.onrender.com';  // Flask API URL
 
-// MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/otpLoginApp', {
+// MongoDB Connection to Atlas
+const dbURI = process.env.MONGODB_URI;  // Using MongoDB Atlas URI from .env file
+mongoose.connect(dbURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Error connecting to MongoDB', err));
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch(err => console.error('Error connecting to MongoDB Atlas', err));
 
 // Middleware
 app.use(cors());
@@ -39,13 +41,13 @@ const sendOtpEmail = (email, otp) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'sreekar1415@gmail.com',
-      pass: 'sgse scpy bwvs ljxp',
+      user: process.env.EMAIL_USER,  // Using email from .env file
+      pass: process.env.EMAIL_PASS,  // Using email password from .env file
     },
   });
 
   const mailOptions = {
-    from: 'sreekar1415@gmail.com',
+    from: process.env.EMAIL_USER,
     to: email,
     subject: 'Your OTP Code',
     text: `Your OTP is ${otp}`,
