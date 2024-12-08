@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');  // Updated to bcryptjs
 const axios = require('axios');  // Add axios for handling requests to Flask API
 
 const app = express();
@@ -70,7 +70,7 @@ app.post('/signup', async (req, res) => {
       return res.send({ success: false, message: 'User already exists' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);  // Use bcryptjs to hash password
     const newUser = new User({ email, password: hashedPassword });
     await newUser.save();
 
@@ -95,7 +95,7 @@ app.post('/login', async (req, res) => {
       return res.send({ success: false, message: 'User does not exist' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);  // Use bcryptjs to compare password
     if (!isMatch) {
       return res.send({ success: false, message: 'Incorrect password' });
     }
